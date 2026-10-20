@@ -11,7 +11,9 @@ import argparse, hashlib, json, os, sys, datetime, getpass
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.path.join(os.path.dirname(HERE), "manifest.json")
-DEFAULT_ROOTS = ["~/.claude", "/mnt/skills", "~/.config/claude", "~/Library/Application Support/Claude", "."]
+# The folder that holds this skill holds the other installed skills too, so search it first.
+SKILLS_HOME = os.path.dirname(os.path.dirname(HERE))
+DEFAULT_ROOTS = [SKILLS_HOME, "~/.claude", "/mnt/skills", "~/.config/claude", "~/Library/Application Support/Claude", "."]
 MAX_TEXT = 200_000
 
 
@@ -24,7 +26,10 @@ def sha(path):
 
 
 def find_installs(roots, names):
-    """Return {skill_name: [folder, ...]} for folders named like a managed skill holding SKILL.md."""
+    """Return {skill_name: [folder, ...]} for folders named like a managed skill holding SKILL.md.
+
+    A plugin install may prefix the folder name, as in "soulitude7:s7-deck", so a folder
+    matches when its name is the skill name or ends with ":" plus the skill name."""
     found = {n: [] for n in names}
     seen = set()
     for root in roots:
@@ -33,7 +38,7 @@ def find_installs(roots, names):
             continue
         for dirpath, dirnames, filenames in os.walk(root):
             dirnames[:] = [d for d in dirnames if not d.startswith(".git") and d != "node_modules"]
-            base = os.path.basename(dirpath)
+            base = os.path.basename(dirpath).rsplit(":", 1)[-1]
             if base in found and "SKILL.md" in filenames:
                 real = os.path.realpath(dirpath)
                 if real not in seen:
@@ -73,10 +78,12 @@ def main():
         "skills": [],
     }
     drift = 0
+    notfound = 0
     for s in skills:
         managed = {k.split("/", 1)[1]: v for k, v in files.items() if k.startswith(s + "/")}
         if not installs[s]:
             report["skills"].append({"skill": s, "status": "not found"})
+            notfound += 1
             continue
         for folder in installs[s]:
             entry = {"skill": s, "folder": folder, "edited": [], "missing": [], "extra": [], "unchanged": 0}
@@ -98,7 +105,12 @@ def main():
             drift += n
             report["skills"].append(entry)
 
-    report["summary"] = "matches release %s" % man["version"] if drift == 0 else "%d file(s) differ from release %s" % (drift, man["version"])
+    if notfound:
+        report["summary"] = "%d skill(s) not found; run again with --root set to the folder that holds the installed skills" % notfound
+    elif drift == 0:
+        report["summary"] = "matches release %s" % man["version"]
+    else:
+        report["summary"] = "%d file(s) differ from release %s" % (drift, man["version"])
     with open(a.out, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
 

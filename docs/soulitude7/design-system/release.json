@@ -1,7 +1,7 @@
 {
   "client": "Soulitude7",
   "plugin": "soulitude7",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "released": "2026-10-20",
   "repo": "mykd-ltd/mykd-studio",
   "page": "https://studio.mykd.co.uk/soulitude7/design-system/",
@@ -35,6 +35,16 @@
     }
   ],
   "history": [
+    {
+      "version": "1.1.1",
+      "date": "2026-10-20",
+      "type": "Patch release",
+      "action": "Update from the Install section above, or check for updates in Cowork.",
+      "notes": [
+        "The system check now finds skills installed from the plugin, whose folders carry a soulitude7: prefix.",
+        "The system check now reports skills it cannot find, instead of a match."
+      ]
+    },
     {
       "version": "1.1.0",
       "date": "2026-10-20",

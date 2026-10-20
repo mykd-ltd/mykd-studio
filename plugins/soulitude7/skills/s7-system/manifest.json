@@ -1,6 +1,6 @@
 {
   "plugin": "soulitude7",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "released": "2026-10-20",
   "design_system": {
     "name": "Soulitude7 Design System v1.2",
@@ -12,6 +12,6 @@
     "s7-deck/SKILL.md": "f6544b533bfa468a9710d384c8db8bd1fb56a6dc75b9fb281a0ad1d42041edf3",
     "s7-social-tile/SKILL.md": "1c4b08b546b49d0bf220c93390654d66f05f204f6cf8cc8c8f44f0ccc90f5ca4",
     "s7-system/SKILL.md": "3c86c4e8daa6594bc4201ee14e304195d529cd3bf044ded13880e70eb0de1e86",
-    "s7-system/scripts/check.py": "49f87eae7d93b9b65ba51d72bcc689a0a64ab219dad6f46913c8314b53ac6ce4"
+    "s7-system/scripts/check.py": "f5aa9c641683d4e2c44d8b63fc884d18ad242b9bd3c687b6ed8c58741a08dee7"
   }
 }
