@@ -1,14 +1,15 @@
 ---
 name: "s7-deck"
-description: "Build Soulitude7 presentations as Claude Slides decks from the Soulitude7 design system and its presentation template. Use for any Soulitude7 deck, pitch or talk slides."
+description: "Build Soulitude7 presentations as Claude Slides decks from the master slides in the Soulitude7 design system. Use for any Soulitude7 deck, pitch or talk slides."
 ---
 
 # s7-deck
 
-Build Soulitude7 presentations as 1920 × 1080 Claude Slides decks. The design system is the single source of truth for the grid, the slide layouts, the panel rule, the slide type sizes and every rule. The template deck is the master copy of the slides and the source of their images. This skill holds only the workflow. If anything here disagrees with the design system, the design system wins.
+Build Soulitude7 presentations as 1920 × 1080 Claude Slides decks. The design system is the only master: the grid, the slide layouts, the panel rule, the slide type sizes, every rule, the master slide files and their images all live in it. This skill holds only the workflow. If anything here disagrees with the design system, the design system wins.
 
 - Design system: https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p
-- Template deck: https://claude.ai/artifact/4nmQSCKnJ1qsRnRk3zvQ8s
+
+The template deck is a preview built from the design system. Never read slides or copy images from it.
 
 ## Always read from the design system first
 
@@ -16,7 +17,7 @@ Read these with the artifact read action and a `path`, every time, before buildi
 
 1. `project/deck.md`: the grid, the slide layout catalogue and when to use each layout, the panel rule, all slide rules, the template asset table and known gaps.
 2. `project/README.md`: brand fundamentals, the Slide type table, the logo rules for slides.
-3. The template deck's `project/deck.json` and the `project/slides/<id>.html` files you need, read from the template deck itself. They are the master copies. The design system's `project/deck/slides/` copies are a reference only.
+3. `project/deck/deck.json` and the `project/deck/slides/<id>.html` files you need. They are the master slides.
 
 If a needed file cannot be read, say so and stop rather than guessing.
 
@@ -27,9 +28,9 @@ If a needed file cannot be read, say so and stop rather than guessing.
 
 ## Building a deck
 
-1. Create the deck from the Slides type with a title, as the Slides type's instructions say. Install the design system (folder `s7ds`: `project/ds/s7ds/tokens.json` plus the `designSystems` record). Use the template deck's `faces` (Playfair Display and Inter from Google Fonts).
-2. Copy the images the chosen slides use from the template deck into the new deck, server side: publish with `asset: true`, `from_url` = the template deck, `asset_ids` = the ids from the slide files (ten at most per call). Each copy gets a new id. Remap every `src="/_blob/<old id>"` in the copied slides to the new id the copy returned. Never leave a template deck id in a new deck.
-3. Copy each chosen slide file from the template deck, keep its structure and positions, and replace the words. Number the slides and the contents list to match the new deck. Keep the speaker notes that explain the layout only if the user wants a template; otherwise replace them with presenter notes or remove them.
+1. Create the deck from the Slides type with a title, as the Slides type's instructions say. Install the design system (folder `s7ds`: `project/ds/s7ds/tokens.json` plus the `designSystems` record). Use the `faces` in the design system's `project/deck/deck.json` (Playfair Display and Inter from Google Fonts).
+2. Copy the images the chosen slides use from the design system into the new deck, server side: publish with `asset: true`, `from_url` = the design system, `asset_ids` = the ids from the slide files (ten at most per call). Each copy gets a new id. Remap every `src="/_blob/<old id>"` in the copied slides to the new id the copy returned. Never leave a design system id in a new deck.
+3. Copy each chosen slide file from the design system's `project/deck/slides/`, keep its structure and positions, and replace the words. Number the slides and the contents list to match the new deck. Keep the speaker notes that explain the layout only if the user wants a template; otherwise replace them with presenter notes or remove them.
 4. Write the index first with the full `order`, then the cover, then the rest, as the Slides type's instructions say.
 
 ## Rules to hold on every slide
@@ -53,7 +54,7 @@ Use the content the user provides first. You may draft copy in the Soulitude7 to
 
 ## Images
 
-Use the design system image library first (skies, landscapes, cities and culture, portraits, full bleed with text). Ask before using any photo from outside it. A library photo not in the template deck: read it from the design system by its asset id and upload it to the new deck. Follow the portrait crop rule in `deck.md`. Type sits directly on a photograph only on the Full bleed cover, with a Full bleed with text image. Icons are yellow: a library icon the template deck does not hold needs its `fill="currentColor"` set to `#FCCD33` before upload, because an icon inside `<img>` renders black.
+Use the design system image library first (skies, landscapes, cities and culture, portraits, full bleed with text). Ask before using any photo from outside it. A library photo not in the Template assets table in `deck.md`: copy it from the design system by its asset id, as in step 2 of Building a deck. Follow the portrait crop rule in `deck.md`. Type sits directly on a photograph only on the Full bleed cover, with a Full bleed with text image. Icons are yellow: a library icon with no yellow copy in `deck.md` needs its `fill="currentColor"` set to `#FCCD33` before upload, because an icon inside `<img>` renders black.
 
 ## Working method
 
@@ -61,9 +62,9 @@ Build a few slides at a time. Re-read the live deck files before editing, becaus
 
 ## Keeping the design system current
 
-**Maintainer only.** Do this only when the artifact read of the design system says you are a writer (MYKD). Everyone else never publishes to the design system, the template deck or any MYKD canvas: build the change in the user's own document, then log it with the `s7-system` skill so MYKD can review it for the next release.
+**Maintainer only.** Do this only when the artifact read of the design system says you are a writer (MYKD). Everyone else never publishes to the design system or to any MYKD preview: build the change in the user's own document, then log it with the `s7-system` skill so MYKD can review it for the next release.
 
-When a slide layout, rule or style changes during a job, update the template deck and the design system in the same session: edit the template slide, then `deck.md`, the matching `deck/slides/` copy and, for type or logo rules, the README. Publish to the design system with the index last, updating its `lastChange`, as the design system's own instructions say. Never leave a deck ahead of the template, or the template ahead of the design system. If a publish to the design system or the template deck is refused as not viewing the latest version, read the files you are changing again into a fresh folder, reapply the edits there and publish from that folder; if it is still refused, read the page once (read action with `page: true`), then retry.
+When a slide layout, rule or style changes during a job, change the design system first: the `deck/slides/` file, `deck.md`, any new image in the asset store and the Template assets table and, for type or logo rules, the README. Publish to the design system with the index last, updating its `lastChange`, as the design system's own instructions say. Then rebuild the template deck preview from the design system and label it with the design system version it was built from. Never edit the preview to change a slide. If a publish to the design system is refused as not viewing the latest version, read the files you are changing again into a fresh folder, reapply the edits there and publish from that folder; if it is still refused, read the page once (read action with `page: true`), then retry.
 
 ## Local rules and logged changes
 

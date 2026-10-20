@@ -41,8 +41,7 @@ mykd-studio/
   tools/build.py                         builds a release
   tools/review.py                        turns a check report into a diff for review
   reviews/                               one review file per report, with your decision
-  docs/                                  the studio site, served by GitHub Pages
-    CNAME                                studio.mykd.co.uk
+  docs/                                  the studio page, uploaded to studio.mykd.co.uk on your hosting
     soulitude7/design-system/index.html  the page
     soulitude7/design-system/downloads/  zips and s7-local.md, written by the build
 ```
@@ -60,15 +59,30 @@ The skills in your account told Claude to publish layout and rule changes straig
 
 ## One-time setup
 
-1. **GitHub.** Create a repo called `mykd-studio` and push this folder. In `release.json`, replace `OWNER` with your GitHub user name.
-2. **Studio site.** Repo settings, Pages: deploy from the `main` branch, `/docs` folder. Add a CNAME record for `studio` at your DNS host pointing to `<owner>.github.io`. Turn on Enforce HTTPS once the certificate is issued.
+Step by step guidance for GitHub, GitHub Desktop, the domain and the form is in SETUP.md.
+
+1. **GitHub.** Create a repo called `mykd-studio` and push this folder. The GitHub username is `mykd-ltd`, already set in `release.json`.
+2. **Studio page.** Upload `docs/soulitude7/design-system/` into the `soulitude7` folder of the existing `studio.mykd.co.uk` site on your cPanel hosting. GitHub Pages is not used.
 3. **Form.** Create a form at Formspree (or any service that accepts a JSON POST) with email notifications to michael@mykd.co.uk. Put its endpoint in `release.json` under `form_endpoint` and rebuild. Until then, the form opens the user's email app with the entry filled in.
 4. **Sharing.** Share the design system, the template deck and the social tiles canvas with each user's Claude email.
 5. **Each user.** Send the page link. They follow Before you start and Install, then ask Claude to check the Soulitude7 system. A clean check means the install worked.
 
 ## Releasing a change
 
-Design system, template deck or canvas changes: publish them in Claude as now. No release. Add a line to the next release notes if users should know.
+Design system changes: publish them to the design system in Claude. No release. Add a line to the next release notes if users should know. The design system is the only master for every template (release 1.1.0). The template deck, the social tiles canvas and the brochure canvas are previews: never edit them to change a template.
+
+Changing a template:
+
+1. Ask Claude to build a working copy of the templates to change, as a deck or a canvas, from the design system.
+2. Edit the working copy by hand.
+3. Ask Claude to push the changes back. Claude compares each edited slide or artboard with its master file and copies the changes into `deck/slides/`, `social/tiles/` or `brochure/pages/`. It also updates `deck.md`, `social.md`, `brochure.md` or the card README where a rule has changed, then publishes.
+4. Ask Claude to rebuild the previews if they should show the change. Each preview is labelled with the design system version it was built from.
+
+Three things make step 3 cleaner:
+
+- **New images.** Any image added on the working copy is added to the design system's asset groups first. Claude then switches the template to the design system's id for it.
+- **Template names.** Keep each artboard or slide name close to the template it came from, so it is clear which master it updates. A brand new layout is fine too. Say that it is new.
+- **Rules.** If a change alters a rule, such as spacing or when to use a layout, say so. Claude writes it into the guidance as well as the file.
 
 Skill changes:
 
@@ -79,7 +93,7 @@ Skill changes:
    - major (2.0.0): a rule changed and older skills would build off brand
 3. Add a history entry at the top of `release.json` with the date, type, action and notes.
 4. Run `python3 tools/build.py`. It stamps the version, writes the manifest, rebuilds the zips and writes the version, links and notes into the page. It stops if the history entry is missing or a skill's frontmatter is wrong.
-5. Commit, tag and push: `git add -A && git commit -m "Release 1.1.0" && git tag v1.1.0 && git push --tags origin main`. The tag matters: review.py diffs user edits against it.
+5. Commit, tag and push in GitHub Desktop, then upload `docs/soulitude7/design-system/` to your hosting. The tag matters: review.py diffs user edits against it.
 6. For a major release, email each user on the day.
 
 Desktop users with Sync automatically turned on receive the release without action. Web users swap the four skills.
@@ -108,7 +122,7 @@ These have not been proven in a client account yet. Run each with a test Claude 
 2. **Marketplace sync.** Anthropic's documentation says Check for updates pulls the latest release and Cowork warns before overwriting local edits. Public bug reports describe personal GitHub marketplaces failing to re-sync. Test an update from 1.0.0 to 1.0.1. If it fails, users fall back to the plugin zip.
 3. **Public repo.** A marketplace added by a user without GitHub access needs a public repo. The skills hold Soulitude7 brand rules and links to your shared artifacts, though the artifacts stay private to the people you share them with. Get Lisa-Marie's agreement before the repo goes public.
 4. **check.py on the web.** On claude.ai the script runs in Claude's sandbox. Confirm it finds the uploaded skills. If it reports them as not found, users send their skill files by email instead.
-5. **Design system link in s7-social-tile.** It points to `claude.ai/code/artifact/d43cfe38…`, while s7-deck and s7-brochure point to `claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p`. Confirm they are the same artifact, or correct s7-social-tile before release 1.0.0 goes out.
+5. **Design system link in s7-social-tile.** Closed 20 October 2026. `claude.ai/code/artifact/d43cfe38…` and `claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p` are the same artifact. Every skill now uses the second form (release 1.1.0).
 6. **Footer.** The shared footer's Cookie settings button does nothing on this page, because the page sets no cookies and has no cookie bar. Decide whether the footer component should hide it on pages without a bar.
 
 ## A simpler route if Soulitude7 grows

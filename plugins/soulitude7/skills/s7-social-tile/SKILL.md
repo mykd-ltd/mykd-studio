@@ -5,21 +5,22 @@ description: "Build Soulitude7 1080 x 1080 social tiles from the approved design
 
 # s7-social-tile
 
-Builds Soulitude7 social tiles from the approved tile designs held in the Soulitude7 design system. The design system is the single source of truth. This skill never invents a layout, colour, type style or logo treatment.
+Builds Soulitude7 social tiles from the approved tile templates held in the Soulitude7 design system. The design system is the only master: the rules, the tile templates and their images all live in it. This skill never invents a layout, colour, type style or logo treatment.
 
 ## Sources
 
-- Design system (read live every run): https://claude.ai/code/artifact/d43cfe38-c2f1-4632-8e4a-b278050a01bd
-- Approved tile artboards (to duplicate): https://claude.ai/artifact/Kj833xde4q5ofB87ouRh3u (Soulitude7 social tiles canvas)
-- Meet the team tiles canvas: https://claude.ai/code/artifact/0efdc16d-654c-47f2-be5b-05ad15885c4b
+- Design system (read live every run): https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p
+- Tile templates: `project/social/tiles/<id>.dc.html` in the design system, listed in `project/social.md`.
+
+The social tiles canvas is a preview built from the design system, and the Meet the team tiles canvas holds finished tiles. Never read a layout from either or duplicate their artboards.
 
 If the design system cannot be read, stop and tell the user. Do not build from memory or from this file alone.
 
 ## Step 1: read the system
 
-Read `project/README.md` from the design system, including its "Social tile copy" section, then the README of the chosen design (`project/components/<Design>/README.md`) and the README of any asset group used (`project/assets/<Group>/README.md`). Take colours, type styles, spacing, logo rules, copy rules and voice rules from there. Where this file and the design system differ, the design system wins and the difference is reported to the user.
+Read `project/README.md` from the design system, including its "Social tile copy" section, then `project/social.md`, then the README of the chosen design (`project/components/<Design>/README.md`) and the README of any asset group used (`project/assets/<Group>/README.md`). Take colours, type styles, spacing, logo rules, copy rules and voice rules from there. Where this file and the design system differ, the design system wins and the difference is reported to the user.
 
-The canvas artboards can lag behind the design system. Where an artboard differs from the design system card, build to the card and tell the user the artboard needs updating. As of 19 October 2026 the Team profile artboards still carry the old styles (SemiBold headline, yellow eyebrow on silver, 32 / 150% supporting line).
+Build from the template file in `project/social/tiles/` for the chosen design and variant. The templates are built to the cards. If a template and its card ever differ, build to the card and tell the user the template needs updating.
 
 ## Step 2: choose the design (no guessing)
 
@@ -43,8 +44,8 @@ Rules:
 
 Ask: "Do you want an editable image?"
 
-- Yes: build a Design canvas (Artifact type Design) with one 1080 x 1080 artboard per tile, built as plain markup from the approved tile geometry so text can be retyped in place. Install the Soulitude7 design system on the canvas as the Design type instructs. Duplicate from the approved artboards, do not redraw them.
-- No: render a PNG at 1080 x 1080 from HTML built to the same geometry, with the fonts embedded. Deliver the PNG to the user.
+- Yes: build a Design canvas (Artifact type Design) with one 1080 x 1080 artboard per tile. Install the Soulitude7 design system on the canvas as the Design type instructs. Copy the template file from `project/social/tiles/` as the artboard, do not redraw it. Copy its images from the design system into the canvas, server side (publish with `asset: true`, `from_url` = the design system, `asset_ids` = the ids in the template), and remap every `src` to the id the copy returns.
+- No: render a PNG at 1080 x 1080 from the same template file, with the fonts embedded. Deliver the PNG to the user.
 
 If the user wants both, build the canvas and export PNGs from it.
 
@@ -148,6 +149,12 @@ Confirm each item and fix any failure before sending:
 ## Output and naming
 
 Name files `s7-<design>-<short title>.png`, lower case, words joined by hyphens, for example `s7-case-study-introducing-our-associates.png`. Deliver in the conversation. For an editable image, deliver the Design canvas link as well, and say the canvas is private until shared from its Share menu. In the reply, state in one or two sentences what was built, which design and variant, and any default applied or element flagged.
+
+## Keeping the design system current
+
+**Maintainer only.** Do this only when the artifact read of the design system says you are a writer (MYKD). Everyone else never publishes to the design system or to any MYKD preview: build the change in the user's own document, then log it with the `s7-system` skill so MYKD can review it for the next release.
+
+When a tile design, rule or style changes during a job, change the design system first: the card README, the template in `social/tiles/`, `social.md` and any new image in its asset group. Publish to the design system with the index last, updating its `lastChange`, as the design system's own instructions say. Then rebuild the social tiles canvas preview from the design system and label it with the design system version it was built from. Never edit the preview to change a tile.
 
 ## Local rules and logged changes
 

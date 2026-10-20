@@ -1,23 +1,52 @@
 {
   "client": "Soulitude7",
   "plugin": "soulitude7",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "released": "2026-10-20",
-  "repo": "OWNER/mykd-studio",
+  "repo": "mykd-ltd/mykd-studio",
   "page": "https://studio.mykd.co.uk/soulitude7/design-system/",
   "form_endpoint": "",
   "contact": "michael@mykd.co.uk",
   "design_system": {
     "name": "Soulitude7 Design System v1.2",
     "url": "https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p",
-    "version": "1.2, artifact version 43"
+    "version": "1.2, artifact version 50"
   },
   "shared_links": [
-    {"name": "Soulitude7 Design System", "url": "https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p", "note": "The rules, tokens, layouts and image library. Read live by every skill."},
-    {"name": "Presentation template deck", "url": "https://claude.ai/artifact/4nmQSCKnJ1qsRnRk3zvQ8s", "note": "Master slides used by s7-deck."},
-    {"name": "Social tiles canvas", "url": "https://claude.ai/artifact/Kj833xde4q5ofB87ouRh3u", "note": "Approved tile artboards used by s7-social-tile."}
+    {
+      "name": "Soulitude7 Design System",
+      "url": "https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p",
+      "note": "The only master: rules, tokens, slide, tile and brochure templates and the image library. Read live by every skill."
+    },
+    {
+      "name": "Presentation template deck (preview)",
+      "url": "https://claude.ai/artifact/4nmQSCKnJ1qsRnRk3zvQ8s",
+      "note": "Preview of the master slides, built from design system version 50. Not a master."
+    },
+    {
+      "name": "Social tiles canvas (preview)",
+      "url": "https://claude.ai/artifact/Kj833xde4q5ofB87ouRh3u",
+      "note": "Preview of the tile templates, built from design system version 50. Not a master."
+    },
+    {
+      "name": "Brochure canvas (preview)",
+      "url": "https://claude.ai/artifact/MVnpMUGfvtZHqJVDyM3Pgi",
+      "note": "Preview of the brochure pages, built from design system version 50. Not a master."
+    }
   ],
   "history": [
+    {
+      "version": "1.1.0",
+      "date": "2026-10-20",
+      "type": "Minor release",
+      "action": "Update from the Install section above, or check for updates in Cowork.",
+      "notes": [
+        "The Soulitude7 design system is now the only master for every template: slides, social tiles and brochure pages, with their images.",
+        "The template deck, the social tiles canvas and a new brochure canvas are previews built from the design system. Each is labelled with the design system version it was built from.",
+        "s7-deck and s7-social-tile now read slides, tiles and images from the design system only.",
+        "Every skill uses the same address for the design system."
+      ]
+    },
     {
       "version": "1.0.0",
       "date": "2026-10-20",

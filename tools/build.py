@@ -9,7 +9,7 @@ Reads release.json and:
 5. copies release.json next to the page so anyone can check the latest version
 
 Run from the repo root: python3 tools/build.py
-Then commit, tag (git tag v<version>) and push. GitHub Pages publishes docs/.
+Then commit, tag and push in GitHub Desktop, and upload docs/soulitude7/design-system/ to studio.mykd.co.uk.
 """
 import hashlib, html, json, os, re, shutil, sys, zipfile
 
@@ -66,8 +66,11 @@ def zwrite(z, full, arc):
 def build_zips():
     if os.path.isdir(DL):
         for fn in os.listdir(DL):
-            if fn.endswith(".zip"):
-                os.remove(os.path.join(DL, fn))
+            if fn.endswith(".zip") and V not in fn and not fn.startswith("s7-"):
+                try:
+                    os.remove(os.path.join(DL, fn))  # old release zips
+                except OSError:
+                    print("Could not remove old zip, delete it by hand: " + fn)
     os.makedirs(DL, exist_ok=True)
     files = list(managed_files())
     files += [(s, "%s/manifest.json" % s, os.path.join(SKILLS, s, "manifest.json")) for s in ["s7-system"]]
@@ -132,6 +135,26 @@ def render_page(zips):
     open(p, "w", encoding="utf-8").write(page)
 
 
+def build_upload():
+    """Zip the page folder for cPanel, with web-readable permissions (folders 755, files 644)."""
+    os.makedirs(os.path.join(ROOT, "upload"), exist_ok=True)
+    out = os.path.join(ROOT, "upload", "studio-design-system-%s.zip" % V)
+    base = os.path.dirname(PAGE_DIR)
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as z:
+        for dp, dns, fns in os.walk(PAGE_DIR):
+            dns[:] = sorted(d for d in dns if not d.startswith("."))
+            rel = os.path.relpath(dp, base)
+            zi = zipfile.ZipInfo(rel + "/", FIXED_TIME); zi.external_attr = (0o40755 << 16) | 0x10
+            z.writestr(zi, "")
+            for f in sorted(fns):
+                if f.startswith("."):
+                    continue
+                zi = zipfile.ZipInfo(os.path.join(rel, f), FIXED_TIME)
+                zi.external_attr = 0o100644 << 16; zi.compress_type = zipfile.ZIP_DEFLATED
+                z.writestr(zi, open(os.path.join(dp, f), "rb").read())
+    return out
+
+
 def nice_date(iso):
     y, m, d = iso.split("-")
     months = "January February March April May June July August September October November December".split()
@@ -156,8 +179,10 @@ def main():
     zips = build_zips()
     render_page(zips)
     shutil.copy(os.path.join(ROOT, "release.json"), os.path.join(PAGE_DIR, "release.json"))
+    up = build_upload()
+    print("Upload for cPanel: " + os.path.relpath(up, ROOT))
     print("Built %s %s: %d managed files, %d skill zips" % (REL["plugin"], V, len(files), len(zips)))
-    print("Next: git add -A && git commit -m 'Release %s' && git tag v%s && git push --tags origin main" % (V, V))
+    print("Next: in GitHub Desktop, commit to main, tag the commit v%s in History, then Push origin. Then upload docs/soulitude7/design-system/ to studio.mykd.co.uk." % V)
 
 
 if __name__ == "__main__":
