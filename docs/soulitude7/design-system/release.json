@@ -1,0 +1,34 @@
+{
+  "client": "Soulitude7",
+  "plugin": "soulitude7",
+  "version": "1.0.0",
+  "released": "2026-10-20",
+  "repo": "OWNER/mykd-studio",
+  "page": "https://studio.mykd.co.uk/soulitude7/design-system/",
+  "form_endpoint": "",
+  "contact": "michael@mykd.co.uk",
+  "design_system": {
+    "name": "Soulitude7 Design System v1.2",
+    "url": "https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p",
+    "version": "1.2, artifact version 43"
+  },
+  "shared_links": [
+    {"name": "Soulitude7 Design System", "url": "https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p", "note": "The rules, tokens, layouts and image library. Read live by every skill."},
+    {"name": "Presentation template deck", "url": "https://claude.ai/artifact/4nmQSCKnJ1qsRnRk3zvQ8s", "note": "Master slides used by s7-deck."},
+    {"name": "Social tiles canvas", "url": "https://claude.ai/artifact/Kj833xde4q5ofB87ouRh3u", "note": "Approved tile artboards used by s7-social-tile."}
+  ],
+  "history": [
+    {
+      "version": "1.0.0",
+      "date": "2026-10-20",
+      "type": "First release",
+      "action": "Install it from the Install section above.",
+      "notes": [
+        "Four skills: s7-deck, s7-brochure, s7-social-tile and s7-system.",
+        "Each skill lists departures from the design system at the end of every build and offers to log them.",
+        "Skills read local rules from s7-local.md in your Claude project.",
+        "Only MYKD publishes changes to the design system, the template deck and the canvases."
+      ]
+    }
+  ]
+}

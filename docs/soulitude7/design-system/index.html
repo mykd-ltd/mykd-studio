@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Soulitude7 design system</title>
+<meta name="description" content="Install the Soulitude7 skills in Claude, keep them current and log local changes for MYKD to review.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@400;500&family=Funnel+Sans:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#FF6A81;--accent-press:#EB566D;--dark:#3D3641;--light:#F7F4EF;--grey:#AFADA2;--grey-strong:#6F6B72;--white:#FFFFFF;
+  --line:rgba(166,164,153,.2);--line-strong:rgba(166,164,153,.45);
+  --display:"Funnel Display",sans-serif;--body:"Funnel Sans",sans-serif;--sans:"Inter",sans-serif;
+  --t-display:clamp(40px,6vw,72px);--t-h2:clamp(30px,3.6vw,44px);--t-h3:clamp(21px,2vw,24px);
+  --t-lede:clamp(19px,1.8vw,22px);--t-body:clamp(17px,1.4vw,18px);--t-small:16px;--t-meta:13px;
+  --gutter:clamp(16px,4vw,30px);--section:clamp(72px,10vw,136px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--light);color:var(--dark);font-family:var(--body);font-size:var(--t-body);line-height:1.55;letter-spacing:-.01em}
+img{max-width:100%;display:block}
+a{color:var(--dark);text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1px;transition:color .18s ease}
+a:hover{color:var(--accent-press)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1400px;margin:0 auto;padding:0 var(--gutter)}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;text-wrap:balance}
+h1{font-size:var(--t-display);line-height:1;letter-spacing:-.05em}
+h2{font-size:var(--t-h2);line-height:1.05;letter-spacing:-.035em}
+h3{font-size:var(--t-h3);line-height:1.15;letter-spacing:-.03em}
+p{margin:0 0 1em;text-wrap:pretty}
+code,.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--white);border:1px solid var(--line-strong);border-radius:3px;padding:.1em .35em;word-break:break-all}
+.dark code{background:rgba(247,244,239,.08);border-color:rgba(166,164,153,.3);color:var(--light)}
+
+/* masthead */
+.mast{background:var(--dark);color:var(--light)}
+.mast .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:76px}
+.mast img{height:40px;width:auto}
+.mast nav{display:flex;gap:24px;font-family:var(--sans);font-size:var(--t-small);font-weight:500;letter-spacing:-.01em}
+.mast nav a{color:var(--light);opacity:.78;text-decoration:none}
+.mast nav a:hover{opacity:1;color:var(--light)}
+@media (max-width:760px){.mast nav{display:none}}
+
+/* hero */
+.hero{background:var(--dark);color:var(--light);padding:clamp(48px,8vw,112px) 0 clamp(56px,8vw,104px)}
+.hero h1{max-width:12ch}
+.hero .lede{font-size:var(--t-lede);line-height:1.45;color:var(--light);max-width:34em;margin:28px 0 40px}
+.facts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid rgba(166,164,153,.3);font-family:var(--sans);font-size:var(--t-small);max-width:760px}
+.facts div{padding:16px 40px 0 0;min-width:180px}
+.facts dt{color:var(--grey);font-size:13px;margin-bottom:4px}
+.facts dd{margin:0;color:var(--light);font-weight:500}
+.facts .num{color:var(--accent);font-weight:600}
+
+/* sections */
+section.block{padding-top:var(--section)}
+.after-dark{padding-top:clamp(56px,7vw,104px)!important}
+.label{font-family:var(--sans);font-size:clamp(17px,1.6vw,20px);font-weight:500;letter-spacing:-.03em;color:var(--accent);border-top:1px solid var(--line-strong);padding-top:20px;margin:0 0 24px}
+.after-dark .label{border-top:0;padding-top:0}
+.split{display:grid;grid-template-columns:1fr;gap:28px}
+@media (min-width:960px){.split{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(60px,9vw,160px)}}
+.intro{max-width:36em}
+.muted{color:var(--grey-strong)}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:1fr;gap:16px;margin-top:8px}
+@media (min-width:760px){.tiles.two{grid-template-columns:1fr 1fr}}
+.tile{background:var(--white);padding:clamp(24px,3vw,40px);display:flex;flex-direction:column}
+.tile .tag{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--accent);margin:0 0 12px}
+.tile h3{margin-bottom:16px}
+.tile .tile-foot{margin-top:auto;padding-top:24px;display:flex;flex-wrap:wrap;gap:12px}
+
+/* numbered steps */
+ol.steps{list-style:none;margin:0;padding:0;counter-reset:s}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:36px 1fr;gap:4px 12px;padding:14px 0;border-top:1px solid var(--line)}
+ol.steps>li:first-child{border-top:0;padding-top:4px}
+ol.steps>li::before{content:counter(s,decimal-leading-zero);font-family:var(--sans);font-size:14px;font-weight:600;color:var(--grey-strong);padding-top:3px}
+ol.steps p{margin:0}
+ol.steps strong{font-weight:500}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;min-height:48px;padding:12px 18px;border-radius:5px;font-family:var(--sans);font-size:17px;line-height:22px;font-weight:500;letter-spacing:-.02em;text-decoration:none;color:var(--accent-press);box-shadow:inset 0 0 0 1px var(--accent);background:transparent;cursor:pointer;border:0;transition:color .18s ease,box-shadow .18s ease}
+.btn:hover{color:var(--dark);box-shadow:inset 0 0 0 1px var(--accent-press)}
+.btn.filled{background:var(--accent);color:var(--dark);box-shadow:none}
+.btn.filled:hover{background:var(--accent-press);color:var(--dark)}
+.copy{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0 2px}
+.copy button{font-family:var(--sans);font-size:13px;font-weight:500;color:var(--accent-press);background:none;border:1px solid var(--accent);border-radius:5px;padding:4px 10px;min-height:32px;cursor:pointer}
+
+/* links list */
+ul.links{list-style:none;margin:0;padding:0}
+ul.links li{display:grid;grid-template-columns:1fr;gap:2px;padding:18px 0;border-top:1px solid var(--line)}
+@media (min-width:760px){ul.links li{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:30px}}
+ul.links a{font-family:var(--display);font-size:var(--t-h3);letter-spacing:-.03em;line-height:1.2}
+ul.links span{color:var(--grey-strong);font-size:var(--t-small);font-family:var(--sans);padding-top:4px}
+
+/* table */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:var(--t-small);line-height:1.45}
+th,td{text-align:left;vertical-align:top;padding:14px 20px 14px 0;border-top:1px solid var(--line)}
+th{font-weight:500;color:var(--accent-press);font-size:14px;border-top:0;padding-top:0}
+td:first-child{font-weight:600;white-space:nowrap}
+@media (max-width:600px){
+  table,thead,tbody,tr,td{display:block}thead{display:none}
+  tr{border-top:1px solid var(--line);padding:14px 0}td{border:0;padding:2px 0}
+  td[data-k]::before{content:attr(data-k);display:block;font-size:13px;color:var(--grey-strong);margin-top:8px}
+}
+
+/* releases */
+.rel{display:grid;grid-template-columns:1fr;gap:8px;padding:22px 0;border-top:1px solid var(--line)}
+@media (min-width:760px){.rel{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:30px}}
+.rel-meta{display:flex;gap:16px;align-items:baseline;font-family:var(--sans);font-size:var(--t-small);color:var(--grey-strong)}
+.rel-v{font-family:var(--sans);font-weight:600;font-size:clamp(28px,3vw,40px);letter-spacing:-.035em;color:var(--accent-press)}
+.rel-type{margin-bottom:8px}
+.rel ul{margin:0;padding-left:1.1em}
+.rel li{margin:4px 0}
+
+/* form, dark block */
+.dark{background:var(--dark);color:var(--light);margin-top:var(--section);padding:var(--section) 0}
+.dark .label{color:var(--accent)}
+.dark .muted{color:var(--grey)}
+.dark a{color:var(--light)}
+form{display:grid;grid-template-columns:1fr;gap:18px 20px}
+@media (min-width:760px){form{grid-template-columns:1fr 1fr}.full{grid-column:1 / -1}}
+label{display:block;font-family:var(--sans);font-size:14px;font-weight:500;margin-bottom:6px;color:var(--light)}
+label .opt{color:var(--grey);font-weight:400}
+input,select,textarea{width:100%;font:inherit;font-family:var(--sans);font-size:16px;color:var(--light);background:rgba(247,244,239,.06);border:1px solid rgba(166,164,153,.45);border-radius:3px;padding:12px 14px;min-height:48px}
+textarea{min-height:120px;resize:vertical;line-height:1.45}
+textarea.report{min-height:96px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,#AFADA2 50%),linear-gradient(135deg,#AFADA2 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat;padding-right:40px}
+select option{color:var(--dark)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+.status{font-family:var(--sans);font-size:var(--t-small);color:var(--light);min-height:1.5em}
+.hint{font-family:var(--sans);font-size:13px;color:var(--grey);margin-top:6px}
+
+/* footer, shared component */
+.spacer{height:var(--section)}
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <a href="https://mykd.co.uk/" aria-label="MYKD home"><img src="../../assets/mykd-logo-ondark.png" alt="MYKD" width="93" height="40"></a>
+    <nav aria-label="Page">
+      <a href="#install">Install</a>
+      <a href="#updates">Updates</a>
+      <a href="#releases">Releases</a>
+      <a href="#log">Log a change</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="hero">
+  <div class="wrap">
+    <h1>Soulitude7 design system</h1>
+    <p class="lede">Everything needed to make Soulitude7 decks, brochures and social tiles in Claude. Install the skills once, keep them current from this page and log any local change for review.</p>
+    <dl class="facts">
+      <div><dt>Current release</dt><dd class="num"><!-- build:version -->1.0.0<!-- /build:version --></dd></div>
+      <div><dt>Released</dt><dd><!-- build:released -->20 October 2026<!-- /build:released --></dd></div>
+      <div><dt>Managed by</dt><dd>MYKD</dd></div>
+    </dl>
+  </div>
+</div>
+
+<section class="block after-dark" id="start">
+  <div class="wrap split">
+    <div>
+      <p class="label">Before you start</p>
+      <h2>Three things to have in place</h2>
+    </div>
+    <div class="intro">
+      <ol class="steps">
+        <li><p><strong>A Claude Pro plan or above.</strong> Skills need code execution, so check it is switched on in Claude's settings.</p></li>
+        <li><p><strong>Access to the shared files.</strong> MYKD shares the design system, the template deck and the social tiles canvas with the email address on your Claude account. Open each link under <a href="#shared">Shared with you</a> once to check it opens. If one does not, email <a href="mailto:michael@mykd.co.uk">michael@mykd.co.uk</a>.</p></li>
+        <li><p><strong>A Soulitude7 project in Claude.</strong> Create a project called Soulitude7 and add the <a href="downloads/s7-local.md" download>local rules file</a> to it. Your own rules go in that file, and updates never touch it.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="install">
+  <div class="wrap">
+    <p class="label">Install</p>
+    <div class="split" style="margin-bottom:32px">
+      <h2>Choose how you use Claude</h2>
+      <p class="intro muted">The desktop app route updates itself. The web route takes a manual swap at each release. Both install the same four skills: s7-deck, s7-brochure, s7-social-tile and s7-system.</p>
+    </div>
+    <div class="tiles two">
+      <div class="tile">
+        <p class="tag">Recommended</p>
+        <h3>Claude desktop app</h3>
+        <ol class="steps">
+          <li><p>Open <strong>Customize</strong> in the sidebar, then <strong>Plugins</strong>.</p></li>
+          <li><div><p>Select <strong>Add marketplace</strong> and enter:</p>
+            <div class="copy"><code id="repo"><!-- build:repo -->OWNER/mykd-studio<!-- /build:repo --></code><button type="button" data-copy="repo">Copy</button></div></div></li>
+          <li><p>Find <strong>Soulitude7</strong> in the list and select <strong>Install</strong>.</p></li>
+          <li><p>On the MYKD studio marketplace, turn on <strong>Sync automatically</strong>.</p></li>
+          <li><p>Start a chat in your Soulitude7 project and ask Claude to <em>check the Soulitude7 system</em>. It confirms the release.</p></li>
+        </ol>
+        <div class="tile-foot">
+          <!-- build:plugin-zip --><a class="btn" href="downloads/soulitude7-plugin-1.0.0.zip" download>Download the plugin (1.0.0)</a><!-- /build:plugin-zip -->
+        </div>
+        <p class="hint" style="color:var(--grey-strong)">If the marketplace will not add, download the plugin and use the upload option on the Plugins page instead. Updates are then manual, as on the web.</p>
+      </div>
+      <div class="tile">
+        <p class="tag">Any browser</p>
+        <h3>Claude on the web</h3>
+        <ol class="steps">
+          <li><p>Download the skills below and unzip the file. It holds four skill files, one per skill.</p></li>
+          <li><p>Go to <strong>Customize</strong>, then <strong>Skills</strong>. Select <strong>+</strong>, <strong>Create skill</strong>, then <strong>Upload a skill</strong>.</p></li>
+          <li><p>Upload each of the four files in turn: <code>s7-deck.zip</code>, <code>s7-brochure.zip</code>, <code>s7-social-tile.zip</code>, <code>s7-system.zip</code>. Leave them zipped.</p></li>
+          <li><p>Check all four are switched on.</p></li>
+          <li><p>Start a chat in your Soulitude7 project and ask Claude to <em>check the Soulitude7 system</em>.</p></li>
+        </ol>
+        <div class="tile-foot">
+          <!-- build:skills-zip --><a class="btn" href="downloads/soulitude7-skills-1.0.0.zip" download>Download the four skills (1.0.0)</a><!-- /build:skills-zip -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="shared">
+  <div class="wrap">
+    <p class="label">Shared with you</p>
+    <div class="split" style="margin-bottom:24px">
+      <h2>Live files, never downloaded</h2>
+      <p class="intro muted">These live in the MYKD Claude account and update the moment MYKD changes them. The skills read them on every build, so a new colour rule or layout reaches you without an install.</p>
+    </div>
+    <ul class="links">
+      <!-- build:links --><li><a href="https://claude.ai/artifact/TD4zmiVXgsGu95xEFvjZ4p" target="_blank" rel="noopener">Soulitude7 Design System</a><span>The rules, tokens, layouts and image library. Read live by every skill.</span></li><li><a href="https://claude.ai/artifact/4nmQSCKnJ1qsRnRk3zvQ8s" target="_blank" rel="noopener">Presentation template deck</a><span>Master slides used by s7-deck.</span></li><li><a href="https://claude.ai/artifact/Kj833xde4q5ofB87ouRh3u" target="_blank" rel="noopener">Social tiles canvas</a><span>Approved tile artboards used by s7-social-tile.</span></li><!-- /build:links -->
+    </ul>
+  </div>
+</section>
+
+<section class="block" id="updates">
+  <div class="wrap">
+    <p class="label">Updates</p>
+    <div class="split" style="margin-bottom:32px">
+      <h2>Each release replaces the skills whole</h2>
+      <div class="intro">
+        <p>A release overwrites the four skills. It does not merge with local edits, so any edit made to a skill file is lost at the next update. That keeps every copy identical to the release MYKD tested.</p>
+        <p class="muted">Local changes belong in the local rules file in your project, which updates never touch. Before every update, ask Claude to <em>check the Soulitude7 system</em>. If it finds edits, it offers to log them here first.</p>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Release</th><th>What it means</th><th>What to do</th></tr></thead>
+        <tbody>
+          <tr><td>1.0.<strong>1</strong></td><td data-k="What it means">A fix to a skill. Nothing looks different.</td><td data-k="What to do">Desktop app: nothing, it syncs. Web: swap the skills when convenient.</td></tr>
+          <tr><td>1.<strong>1</strong>.0</td><td data-k="What it means">Something new: a layout, a format or a skill step.</td><td data-k="What to do">Update within a week. Read the release notes.</td></tr>
+          <tr><td><strong>2</strong>.0.0</td><td data-k="What it means">A rule changed. Older skills may now build off brand.</td><td data-k="What to do">Update before the next document. MYKD emails you on the day.</td></tr>
+          <tr><td>Design system</td><td data-k="What it means">A change to the shared design system, template deck or canvas.</td><td data-k="What to do">Nothing. It reaches you live.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tiles two" style="margin-top:40px">
+      <div class="tile">
+        <h3>Update in the desktop app</h3>
+        <ol class="steps">
+          <li><p>Ask Claude to <em>check the Soulitude7 system</em> and log anything it finds.</p></li>
+          <li><p>Customize, Plugins, the MYKD studio marketplace, <strong>Check for updates</strong>.</p></li>
+          <li><p>If Claude warns that local edits will be overwritten, stop and go back to step 1.</p></li>
+        </ol>
+      </div>
+      <div class="tile">
+        <h3>Update on the web</h3>
+        <ol class="steps">
+          <li><p>Ask Claude to <em>check the Soulitude7 system</em> and log anything it finds.</p></li>
+          <li><p>Customize, Skills: delete the four Soulitude7 skills.</p></li>
+          <li><p>Download the current skills from <a href="#install">Install</a> and upload all four again.</p></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="releases">
+  <div class="wrap">
+    <p class="label">Releases</p>
+    <h2 style="margin-bottom:24px">Release notes</h2>
+    <!-- build:history --><article class="rel"><div class="rel-meta"><span class="rel-v">1.0.0</span><span>20 October 2026</span></div><div><p class="rel-type"><strong>First release.</strong> Install it from the Install section above.</p><ul><li>Four skills: s7-deck, s7-brochure, s7-social-tile and s7-system.</li><li>Each skill lists departures from the design system at the end of every build and offers to log them.</li><li>Skills read local rules from s7-local.md in your Claude project.</li><li>Only MYKD publishes changes to the design system, the template deck and the canvases.</li></ul></div></article><!-- /build:history -->
+  </div>
+</section>
+
+<section class="dark" id="log">
+  <div class="wrap split">
+    <div>
+      <p class="label">Log a change</p>
+      <h2>Tell MYKD what you changed locally</h2>
+      <p class="muted" style="margin-top:20px;max-width:28em">Every logged change is reviewed before the next release. Each one is adopted into the system, kept as a local rule or reversed, and you hear which. Claude fills this form for you when you ask it to log a change.</p>
+    </div>
+    <div>
+      <form id="logform" novalidate>
+        <div><label for="f-name">Your name</label><input id="f-name" name="name" autocomplete="name" required></div>
+        <div><label for="f-email">Your email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div><label for="f-skill">Skill</label>
+          <select id="f-skill" name="skill" required>
+            <option value="">Choose</option><option>s7-deck</option><option>s7-brochure</option><option>s7-social-tile</option><option>s7-system</option><option>Design system</option><option>Not sure</option>
+          </select></div>
+        <div><label for="f-release">Release you have</label><input id="f-release" name="release" placeholder="1.0.0"></div>
+        <div class="full"><label for="f-type">Type of change</label>
+          <select id="f-type" name="type" required>
+            <option value="">Choose</option>
+            <option value="override">A rule set aside for one document</option>
+            <option value="new layout or style">A new layout or style</option>
+            <option value="local rule">A local rule added to s7-local.md</option>
+            <option value="skill edit">An edit to a skill file</option>
+            <option value="problem">Something the system got wrong</option>
+          </select></div>
+        <div class="full"><label for="f-change">What changed</label><textarea id="f-change" name="change" required></textarea></div>
+        <div class="full"><label for="f-why">Why</label><textarea id="f-why" name="why" required style="min-height:96px"></textarea></div>
+        <div class="full"><label for="f-where">Link to the document <span class="opt">(optional)</span></label><input id="f-where" name="where" type="url" inputmode="url" placeholder="https://claude.ai/artifact/..."></div>
+        <div class="full"><label for="f-report">Check report <span class="opt">(optional, paste it whole)</span></label><textarea id="f-report" name="report" class="report"></textarea>
+          <p class="hint">Claude writes this when you ask it to check the Soulitude7 system and it finds edited files.</p></div>
+        <div class="full form-foot"><button class="btn filled" type="submit">Send to MYKD</button><p class="status" id="status" role="status" aria-live="polite"></p></div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- build:config --><script id="studio-config" type="application/json">{"version": "1.0.0", "endpoint": "", "contact": "michael@mykd.co.uk"}</script><!-- /build:config -->
+
+<!-- mykd-footer:start. Shared component, v1, 25 September 2026. Source: consultancy/components/footer/footer.html. Do not edit here: edit the source and run sync.py. -->
+<footer class="mykd-foot">
+  <div class="mykd-foot-in">
+    <span>MYKD is the trading name of Michael Dunn, Essex, England. &copy; 2026</span>
+    <nav aria-label="Footer">
+      <a href="https://mykd.co.uk/">MYKD</a>
+      <a href="https://pulse.mykd.co.uk/">Brand System Pulse</a>
+      <a href="https://mykd.co.uk/privacy/">Privacy notice</a>
+      <button type="button" id="cookie-settings">Cookie settings</button>
+    </nav>
+  </div>
+</footer>
+<style>
+/* MYKD footer. Dark band, full bleed, 1400 column with the site gutters.
+   Hard values so it holds on any page, whatever that page defines. */
+.mykd-foot{background:#3D3641;color:#AFADA2;font-family:"Inter",system-ui,sans-serif;font-size:13px;line-height:18px;letter-spacing:-.01em}
+.mykd-foot-in{max-width:1400px;margin:0 auto;padding:28px 20px 48px;box-sizing:content-box;border-top:1px solid rgba(166,164,153,.28);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px 30px}
+@media (min-width:760px){.mykd-foot-in{padding:28px 30px 56px}}
+.mykd-foot nav{display:flex;flex-wrap:wrap;gap:12px 24px}
+.mykd-foot a,.mykd-foot button{font:inherit;color:#AFADA2;text-decoration:none;background:none;border:0;padding:0;cursor:pointer;transition:color .18s ease}
+.mykd-foot a:hover,.mykd-foot button:hover,.mykd-foot a[aria-current]{color:#F7F4EF}
+.mykd-foot a:focus-visible,.mykd-foot button:focus-visible{outline:2px solid #FF6A81;outline-offset:3px}
+</style>
+<script>
+/* Marks the current page, and opens the page's cookie bar from Cookie settings. */
+(function(){
+var f=document.currentScript.previousElementSibling.previousElementSibling,here=location.origin+location.pathname;
+[].forEach.call(f.querySelectorAll('a'),function(a){if(a.href===here)a.setAttribute('aria-current','page');});
+f.querySelector('#cookie-settings').addEventListener('click',function(){var b=document.getElementById('cookie-bar');if(!b)return;b.hidden=false;var y=document.getElementById('consent-yes');if(y)y.focus();});
+})();
+</script>
+<!-- mykd-footer:end -->
+
+<script>
+(function(){
+  var cfg={};try{cfg=JSON.parse(document.getElementById('studio-config').textContent)}catch(e){}
+  // copy buttons
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=document.getElementById(b.getAttribute('data-copy')).textContent.trim();
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1600)};
+      if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){})}
+    });
+  });
+  // prefill the form from the link Claude builds
+  var form=document.getElementById('logform'),q=new URLSearchParams(location.search);
+  ['name','email','skill','release','type','change','why','where','report'].forEach(function(k){
+    var v=q.get(k),el=form.elements[k];if(!v||!el)return;
+    if(el.tagName==='SELECT'){var ok=[].some.call(el.options,function(o){return o.value===v||o.text===v});if(ok)el.value=[].filter.call(el.options,function(o){return o.value===v||o.text===v})[0].value}
+    else el.value=v;
+  });
+  if(!form.elements.release.value&&cfg.version)form.elements.release.placeholder=cfg.version;
+  var status=document.getElementById('status');
+  form.addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var missing=[].filter.call(form.querySelectorAll('[required]'),function(el){return !el.value.trim()});
+    if(missing.length){status.textContent='Please fill in: '+missing.map(function(el){return form.querySelector('label[for="'+el.id+'"]').firstChild.textContent.trim()}).join(', ')+'.';missing[0].focus();return}
+    var data={};new FormData(form).forEach(function(v,k){data[k]=v});
+    data.page_release=cfg.version;data.sent=new Date().toISOString();
+    if(cfg.endpoint){
+      status.textContent='Sending...';
+      fetch(cfg.endpoint,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(data)})
+        .then(function(r){if(!r.ok)throw 0;form.reset();status.textContent='Sent. Thank you. MYKD replies with a decision at the next release review.'})
+        .catch(function(){mail(data);status.textContent='The form could not send, so your email app has opened with the entry instead.'});
+    }else{mail(data);status.textContent='Your email app has opened with the entry. Send it to finish.'}
+  });
+  function mail(d){
+    var lines=['Name: '+d.name,'Email: '+d.email,'Skill: '+d.skill,'Release: '+(d.release||cfg.version),'Type: '+d.type,'','What changed:',d.change,'','Why:',d.why,'','Link: '+(d.where||'none')];
+    if(d.report)lines.push('','Check report:',d.report);
+    location.href='mailto:'+(cfg.contact||'michael@mykd.co.uk')+'?subject='+encodeURIComponent('Soulitude7 change log: '+d.skill+' '+d.type)+'&body='+encodeURIComponent(lines.join('\n'));
+  }
+})();
+</script>
+</body>
+</html>
